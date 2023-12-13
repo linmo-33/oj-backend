@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linmo.springboot.mapper.SysResourceMapper">
+
+    <resultMap id="BaseResultMap" type="com.linmo.oj.model.sysresource.SysResource">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="resourceName" column="resource_name" jdbcType="VARCHAR"/>
+            <result property="resourceCode" column="resource_url" jdbcType="VARCHAR"/>
+            <result property="createName" column="create_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateName" column="update_name" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="delFlag" column="del_flag" jdbcType="INTEGER"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,resource_name,resource_url,
+        create_name,create_time,update_name,
+        update_time,del_flag,remark
+    </sql>
+    <select id="getResourceList" resultType="com.linmo.oj.model.sysresource.SysResource">
+        SELECT sr.id             AS  id,
+               sr.resource_name AS resourcename,
+               sr.resource_code  AS resourceCode,
+               sr.remark        AS remark,
+               sr.create_time   AS createTime
+        FROM sys_user_role sur
+                 LEFT JOIN sys_role r ON sur.role_id = r.id
+                 LEFT JOIN sys_role_resource srr ON r.id = srr.role_id
+                 LEFT JOIN sys_resource sr ON sr.id = srr.resource_id
+        WHERE sur.user_id = #{userId}
+          AND sr.id IS NOT NULL
+        GROUP BY sr.id
+    </select>
+    <select id="getResourceListByRoleId" resultType="com.linmo.oj.model.sysresource.SysResource">
+        SELECT sr.id             AS  id,
+               sr.resource_name AS resourcename,
+               sr.resource_code  AS resourceCode,
+               sr.remark        AS remark,
+               sr.create_time   AS createTime
+        FROM sys_role_resource srr
+                 LEFT JOIN sys_resource sr ON sr.id = srr.resource_id
+        WHERE srr.role_id = #{roleId}
+          AND sr.id IS NOT NULL
+        GROUP BY sr.id
+    </select>
+</mapper>

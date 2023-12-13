@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linmo.springboot.mapper.SysRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.linmo.oj.model.sysrole.SysRole">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+            <result property="roleKey" column="role_key" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="CHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createName" column="create_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateName" column="update_name" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="delFlag" column="del_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_name,role_key,
+        status,remark,create_name,
+        create_time,update_name,update_time,
+        del_flag
+    </sql>
+    <select id="getRoleList" resultType="com.linmo.oj.model.sysrole.SysRole">
+        select r.id        AS id,
+               r.role_name AS roleName,
+               r.role_key  AS roleKey,
+               r.status    AS status
+        from sys_user_role sur
+                 left join sys_role r on sur.role_id = r.id
+        where sur.user_id = #{userId}
+    </select>
+</mapper>
