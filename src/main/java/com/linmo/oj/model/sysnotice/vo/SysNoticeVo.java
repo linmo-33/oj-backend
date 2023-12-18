@@ -3,6 +3,8 @@ package com.linmo.oj.model.sysnotice.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * TODO
  *
@@ -31,5 +33,8 @@ public class SysNoticeVo {
     private String createName;
 
     @ApiModelProperty(value = "创建时间")
-    private String createTime;
+    private Date createTime;
+
+    @ApiModelProperty(value = "更新时间")
+    private Date updateTime;
 }

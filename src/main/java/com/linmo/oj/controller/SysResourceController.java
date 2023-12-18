@@ -13,7 +13,6 @@ import com.linmo.oj.model.sysresource.vo.SysResourceVo;
 import com.linmo.oj.service.SysResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,6 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "后台资源管理")
-@Tag(name = "SysResourceController", description = "后台资源管理")
 @RequestMapping("/sys_resource")
 public class SysResourceController {
 

@@ -44,10 +44,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
                 .eq(SysRole::getRoleKey, addReq.getRoleKey())) > 0) {
             throw new BusinessException(ResultCode.PARAMS_ERROR, "角色已存在");
         }
+        SysRole sysRole =  EntityConverter.copyAndGetSingle(addReq, SysRole.class);
         //添加创建人
         UserVo loginUser = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
-        addReq.setCreateName(loginUser.getUserAccount());
-        return sysRoleMapper.insert(EntityConverter.copyAndGetSingle(addReq, SysRole.class)) > 0;
+        sysRole.setCreateName(loginUser.getUserAccount());
+        return sysRoleMapper.insert(sysRole) > 0;
     }
 
     @Override
@@ -62,10 +63,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
         if (BeanUtil.isEmpty(sysRoleMapper.selectById(editReq.getId()))) {
             throw new BusinessException("该角色不存在");
         }
+        SysRole sysRole =  EntityConverter.copyAndGetSingle(editReq, SysRole.class);
         //添加更新人
         UserVo loginUser = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
-        editReq.setUpdateName(loginUser.getUserAccount());
-        return sysRoleMapper.updateById(EntityConverter.copyAndGetSingle(editReq, SysRole.class)) > 0;
+        sysRole.setUpdateName(loginUser.getUserAccount());
+        return sysRoleMapper.updateById(sysRole) > 0;
     }
 
     @Override

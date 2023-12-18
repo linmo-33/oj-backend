@@ -44,10 +44,11 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
                 .eq(SysResource::getResourceCode, addReq.getResourceCode())) > 0) {
             throw new BusinessException(ResultCode.PARAMS_ERROR, "资源已存在");
         }
+        SysResource sysResource = EntityConverter.copyAndGetSingle(addReq, SysResource.class);
         //添加创建人
         UserVo loginUser = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
-        addReq.setCreateName(loginUser.getUserAccount());
-        return sysResourceMapper.insert(EntityConverter.copyAndGetSingle(addReq, SysResource.class)) > 0;
+        sysResource.setCreateName(loginUser.getUserAccount());
+        return sysResourceMapper.insert(sysResource) > 0;
     }
 
     @Override
@@ -62,10 +63,11 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         if (BeanUtil.isEmpty(sysResourceMapper.selectById(editReq.getId()))) {
             throw new BusinessException("该资源不存在");
         }
+        SysResource sysResource = EntityConverter.copyAndGetSingle(editReq, SysResource.class);
         //添加更新人
         UserVo loginUser = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
-        editReq.setUpdateName(loginUser.getUserAccount());
-        return sysResourceMapper.updateById(EntityConverter.copyAndGetSingle(editReq, SysResource.class)) > 0;
+        sysResource.setUpdateName(loginUser.getUserAccount());
+        return sysResourceMapper.updateById(sysResource) > 0;
     }
 
     @Override

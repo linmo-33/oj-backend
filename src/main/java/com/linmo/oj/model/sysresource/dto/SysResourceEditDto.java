@@ -27,8 +27,6 @@ public class SysResourceEditDto {
     @NotBlank(message = "资源Code不能为空")
     private String resourceCode;
 
-    @ApiModelProperty(value = "更新人")
-    private String updateName;
 
     @ApiModelProperty(value = "备注")
     private String remark;

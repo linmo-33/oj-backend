@@ -39,7 +39,4 @@ public class UserAddDto {
     @ApiModelProperty(value = "用户类型（0普通用户 1管理员）")
     private String userType;
 
-    @ApiModelProperty(value = "创建人")
-    private String createName;
-
 }

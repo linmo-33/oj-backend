@@ -10,7 +10,6 @@ import com.linmo.oj.model.user.vo.UserVo;
 import com.linmo.oj.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(tags = "后台用户管理")
-@Tag(name = "UserController",description = "后台用户管理")
 @RequestMapping("/user")
 public class UserController {
 
@@ -41,7 +39,7 @@ public class UserController {
 
     @ApiOperation(value = "用户登录")
     @PostMapping (value = "/login")
-    @LogRecord(value = "用户登录")
+    //@LogRecord(value = "用户登录")
     public BaseResponse<String> login(@Validated @RequestBody UserLoginDto userLoginDto) {
         return ResultUtils.success(userService.login(userLoginDto.getUserAccount(),userLoginDto.getUserPassword()));
     }

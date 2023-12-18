@@ -45,7 +45,4 @@ public class UserEditDto {
     @ApiModelProperty(value = "用户类型（0普通用户 1管理员）")
     private String userType;
 
-    @ApiModelProperty(value = "修改人")
-    private String updateName;
-
 }

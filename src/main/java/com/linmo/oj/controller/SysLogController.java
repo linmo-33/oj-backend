@@ -9,7 +9,6 @@ import com.linmo.oj.model.syslog.vo.SysLogVo;
 import com.linmo.oj.service.SysLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(tags = "后台日志管理")
-@Tag(name = "SysLogController", description = "后台日志管理")
 @RequestMapping("/sys_log")
 public class SysLogController {
 
@@ -35,7 +33,7 @@ public class SysLogController {
     @ApiOperation(value = "分页查询日志")
     @PostMapping(value = "/queryList")
     @SaCheckPermission(value = "sysLog.queryList", orRole = "admin")
-    public BaseResponse<PageResult<SysLogVo>> queryListSysRole(@Validated @RequestBody SysLogQueryDto sysLogQueryDto) {
+    public BaseResponse<PageResult<SysLogVo>> queryListSysLog(@Validated @RequestBody SysLogQueryDto sysLogQueryDto) {
         return ResultUtils.success(sysLogService.queryByPage(sysLogQueryDto));
     }
 }

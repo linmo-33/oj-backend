@@ -22,9 +22,6 @@ public class SysResourceAddDto {
     @NotBlank(message = "资源Code不能为空")
     private String resourceCode;
 
-    @ApiModelProperty(value = "创建人")
-    private String createName;
-
     @ApiModelProperty(value = "备注")
     private String remark;
 }

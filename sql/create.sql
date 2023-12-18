@@ -34,7 +34,7 @@ CREATE TABLE `sys_resource`
     `del_flag`      int(0)                                                        NULL     DEFAULT 0 COMMENT '是否删除（0未删除 1已删除）',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT = '后台资源表'
   ROW_FORMAT = Dynamic;
@@ -58,7 +58,7 @@ CREATE TABLE `sys_role`
 
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT = '角色表'
   ROW_FORMAT = Dynamic;
@@ -78,7 +78,7 @@ CREATE TABLE `sys_role_resource`
     `del_flag`    int(0)      NULL     DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
     PRIMARY KEY (`role_id`, `resource_id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
   ROW_FORMAT = Dynamic;
@@ -108,7 +108,7 @@ CREATE TABLE `user`
     `del_flag`      int(0)                                                        NULL     DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT = '用户表'
   ROW_FORMAT = Dynamic;
@@ -119,14 +119,15 @@ CREATE TABLE `user`
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role`
 (
-    `user_id`     bigint(0)   NOT NULL AUTO_INCREMENT COMMENT '用户id',
+    `id`          bigint(0)   NOT NULL AUTO_INCREMENT,
+    `user_id`     bigint(0)   NOT NULL  COMMENT '用户id',
     `role_id`     bigint(0)   NOT NULL DEFAULT 0 COMMENT '角色id',
     `create_name` varchar(64) NULL     DEFAULT NULL COMMENT '创建人',
     `create_time` datetime(0) NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_name` varchar(64) NULL     DEFAULT NULL COMMENT '更新人',
     `update_time` datetime(0) NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
     `del_flag`    int(0)      NULL     DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
-    PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
@@ -139,18 +140,18 @@ CREATE TABLE `sys_user_role`
 DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log`
 (
-    `id`            bigint(0)                                                     NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `operation`     varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作',
-    `url`           varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求地址',
-    `ip`            varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'IP地址',
-    `operator`      varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作人',
+    `id`             bigint(0)                                                     NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `operation`      varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '操作',
+    `url`            varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '请求地址',
+    `ip`             varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'IP地址',
+    `operator`       varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '操作人',
     `operation_time` datetime(0)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
-    `del_flag`      tinyint(0)                                                    NOT NULL DEFAULT 0 COMMENT '是否删除',
+    `del_flag`       tinyint(0)                                                    NOT NULL DEFAULT 0 COMMENT '是否删除',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 8
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志'
+  COLLATE = utf8mb4_unicode_ci COMMENT = '系统日志'
   ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -159,21 +160,147 @@ CREATE TABLE `sys_log`
 DROP TABLE IF EXISTS `sys_notice`;
 CREATE TABLE `sys_notice`
 (
-    `id`         bigint(0)                                                      NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `title`      varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '标题',
-    `content`    varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL     DEFAULT NULL COMMENT '内容',
-    `status`     varchar(3)                                                     NOT NULL DEFAULT 0 COMMENT '状态(0未发布 1已发布 2已关闭)',
-    `remark`     varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL     DEFAULT NULL COMMENT '备注',
-    `create_name` varchar(64) NULL     DEFAULT NULL COMMENT '创建人',
-    `create_time` datetime(0) NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_name` varchar(64) NULL     DEFAULT NULL COMMENT '更新人',
-    `update_time` datetime(0) NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-    `del_flag`   tinyint(0)                                                     NOT NULL DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
+    `id`          bigint(0)                                                      NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `title`       varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '标题',
+    `content`     varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL     DEFAULT NULL COMMENT '内容',
+    `status`      varchar(3)                                                     NOT NULL DEFAULT 0 COMMENT '状态(0未发布 1已发布 2已关闭)',
+    `remark`      varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL     DEFAULT NULL COMMENT '备注',
+    `create_name` varchar(64)                                                    NULL     DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime(0)                                                    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_name` varchar(64)                                                    NULL     DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime(0)                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `del_flag`    tinyint(0)                                                     NOT NULL DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1726440778310557699
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统公告'
+  COLLATE = utf8mb4_unicode_ci COMMENT = '系统公告'
   ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for question
+-- ----------------------------
+DROP TABLE IF EXISTS `question`;
+CREATE TABLE `question`
+(
+    `id`           bigint(0)                                                      NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `title`        varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NULL     DEFAULT NULL COMMENT '题目标题',
+    `content`      text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          NULL COMMENT '题目内容',
+    `difficulty`   varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci   NULL     DEFAULT '0' COMMENT '题目难度(0简单，1中等，2困难)',
+    `tags`         varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL     DEFAULT NULL COMMENT '题目标签列表（json 数组）',
+    `answer`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          NOT NULL COMMENT '答案',
+    `submit_num`   int(0)                                                         NOT NULL DEFAULT 0 COMMENT '题目提交数',
+    `accepted_num` int(0)                                                         NOT NULL DEFAULT 0 COMMENT '题目通过数',
+    `judge_case`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          NOT NULL COMMENT '判题用例（json数组）',
+    `judge_config` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          NOT NULL COMMENT '判题配置（json对象）',
+    `thumb_um`     int(0)                                                         NOT NULL DEFAULT 0 COMMENT '点赞数',
+    `favour_um`    int(0)                                                         NOT NULL DEFAULT 0 COMMENT '收藏数',
+    `user_id`      bigint(0)                                                      NOT NULL COMMENT '创建用户 id',
+    `create_name`  varchar(64)                                                    NULL     DEFAULT NULL COMMENT '创建人',
+    `create_time`  datetime(0)                                                    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_name`  varchar(64)                                                    NULL     DEFAULT NULL COMMENT '更新人',
+    `update_time`  datetime(0)                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `del_flag`     tinyint(0)                                                     NOT NULL DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '题目'
+  ROW_FORMAT = Dynamic;
+INSERT INTO `question` VALUES (1, 'A+B', '**描述**\n\n给出两个整数，请你输出他们的和。\n\n**输入描述**\n\n输两个整数 A, B。\n\n**输出描述**\n\n输出一个整数表示 A+B。\n\n**示例 1：**\n\n    输入：1 1\n  \n    输出：2\n    \n**示例 2：**\n\n    输入：1 5\n    \n    输出：6\n    \n**示例 3：**\n\n    输入： 9 6\n    \n    输出：15\n    \n**示例 4：**\n\n    输入：2 4\n    \n    输出：6\n', '0', '[\"数学\"]', '我也不知道', 10, 9, '[{\"input\":\"1 2\",\"output\":\"3 4\"}]', '{\"timeLimit\":1000,\"memoryLimit\":1000,\"stackLimit\":1000}', 0, 0, 2,' ', '2023-10-12 21:42:32', ' ','2023-10-15 16:46:19', 0);
+INSERT INTO `question` VALUES (2, '整数反转', '## 整数反转\n给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。\n\n如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。\n\n假设环境不允许存储 64 位整数（有符号或无符号）。\n\n**示例 1：**\n\n    输入：x = 123\n  \n    输出：321\n    \n**示例 2：**\n\n    输入：x = -123\n    \n    输出：-321\n    \n**示例 3：**\n\n    输入：x = 120\n    \n    输出：21\n    \n**示例 4：**\n\n    输入：x = 0\n    \n    输出：0', '1', '[\"数学\"]', 'unKnow', 0, 0, '[{\"input\":\"\",\"output\":\"\"}]', '{\"timeLimit\":1000,\"memoryLimit\":1000,\"stackLimit\":1000}', 0, 0, 2, ' ', '2023-10-12 21:42:32', ' ','2023-10-15 16:46:19', 0);
+INSERT INTO `question` VALUES (3, 'N 皇后', '**N 皇后**\n\n按照国际象棋的规则，皇后可以攻击与之处在同一行或同一列或同一斜线上的棋子。\n\nn 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。\n\n给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。\n\n每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 \'Q\' 和 \'.\' 分别代表了皇后和空位。\n\n**示例 1：**\n\n    输入：n = 1\n  \n    输出：[[\"Q\"]]\n    \n**示例 2：**\n\n    输入：n = 4\n    \n    输出：[[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"],[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"]]\n    \n    解释：如上所示，4 皇后问题存在两个不同的解法。\n    ', '2', '[\"数组\",\"回溯\"]', '', 0, 0, '[{\"input\":\"n \\u003d 1\",\"output\":\"[[\\\"Q\\\"]]\"},{\"input\":\"n \\u003d 4\",\"output\":\"[[\\\".Q..\\\",\\\"...Q\\\",\\\"Q...\\\",\\\"..Q.\\\"],[\\\"..Q.\\\",\\\"Q...\\\",\\\"...Q\\\",\\\".Q..\\\"]]\"}]', '{\"timeLimit\":1000,\"memoryLimit\":1000,\"stackLimit\":1000}', 0, 0, 2, ' ', '2023-10-12 21:42:32', ' ','2023-10-15 16:46:19', 0);
+
+-- ----------------------------
+-- Table structure for question_submit
+-- ----------------------------
+DROP TABLE IF EXISTS `question_submit`;
+CREATE TABLE `question_submit`
+(
+    `id`          bigint(0)                                                     NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `language`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '编程语言',
+    `code`        text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         NOT NULL COMMENT '用户代码',
+    `judge_Info`  text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         NOT NULL COMMENT '判题信息（json对象）',
+    `status`      int(0)                                                        NOT NULL DEFAULT 0 COMMENT '判题状态0-待判题、1-判题中、2-成功、3-失败',
+    `question_id` bigint(0)                                                     NOT NULL COMMENT '题目 id',
+    `user_id`     bigint(0)                                                     NOT NULL COMMENT '提交用户 id',
+    `create_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `del_flag`    tinyint(0)                                                    NOT NULL DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '题目提交'
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for post
+-- ----------------------------
+DROP TABLE IF EXISTS `post`;
+CREATE TABLE `post`
+(
+    `id`         bigint(0)                                                      NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `title`      varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NULL     DEFAULT NULL COMMENT '标题',
+    `content`    text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          NULL COMMENT '内容',
+    `tags`       varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL     DEFAULT NULL COMMENT '标签列表（json 数组）',
+    `thumb_num`   int(0)                                                         NOT NULL DEFAULT 0 COMMENT '点赞数',
+    `favour_num`  int(0)                                                         NOT NULL DEFAULT 0 COMMENT '收藏数',
+    `status`     varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci    NULL     DEFAULT '2' COMMENT '帖子状态(0正常 1关闭 2待审核)',
+    `user_id`     bigint(0)                                                      NOT NULL COMMENT '创建用户 id',
+    `create_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `del_flag`    tinyint(0)                                                    NOT NULL DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '帖子'
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for post_favour
+-- ----------------------------
+DROP TABLE IF EXISTS `post_favour`;
+CREATE TABLE `post_favour`
+(
+    `id`         bigint(0)   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `post_id`     bigint(0)   NOT NULL COMMENT '帖子 id',
+    `user_id`     bigint(0)   NOT NULL COMMENT '创建用户 id',
+    `create_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '帖子收藏'
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for post_thumb
+-- ----------------------------
+DROP TABLE IF EXISTS `post_thumb`;
+CREATE TABLE `post_thumb`
+(
+    `id`         bigint(0)   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `post_id`     bigint(0)   NOT NULL COMMENT '帖子 id',
+    `user_id`     bigint(0)   NOT NULL COMMENT '创建用户 id',
+    `create_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_name` varchar(64)                                                   NULL     DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime(0)                                                   NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '帖子点赞'
+  ROW_FORMAT = Dynamic;
+
 
 SET FOREIGN_KEY_CHECKS = 1;

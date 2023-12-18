@@ -75,9 +75,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setUserPassword(encryptPassword);
         //生成随机用户昵称
         user.setUserName("用户" + System.currentTimeMillis());
-        int result =  userMapper.insert(user);
-        if (result < 0){
-            throw new BusinessException(ResultCode.SYSTEM_ERROR,"注册失败");
+        int result = userMapper.insert(user);
+        if (result < 0) {
+            throw new BusinessException(ResultCode.SYSTEM_ERROR, "注册失败");
         }
         return user.getId();
     }
@@ -101,28 +101,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ResultCode.PARAMS_ERROR, "用户名或密码错误");
         }
         //校验用户状态
-        if ("1".equals(user.getUserStatus()) && StpUtil.isDisable(user.getId())){
+        if ("1".equals(user.getUserStatus()) && StpUtil.isDisable(user.getId())) {
             throw new BusinessException(ResultCode.PARAMS_ERROR, "该用户已被禁用");
         }
         //生成token
         StpUtil.login(user.getId());
         //用户信息存入Redis
-        StpUtil.getSession().set("loginUser",user);
+        UserVo userVo = EntityConverter.copyAndGetSingle(user, UserVo.class);
+        StpUtil.getSession().set("loginUser", userVo);
         //获取用户资源权限Code集合
         List<SysResource> resourceList = resourceMapper.getResourceList(user.getId());
         List<String> codeList = resourceList.stream()
-                .map(SysResource::getResourceCode
-                        )
+                .map(SysResource::getResourceCode)
                 .collect(Collectors.toList());
         //将用户资源权限Code集合存入Redis
-        StpUtil.getSession().set("resourceCodeList",codeList);
+        StpUtil.getSession().set("resourceCodeList", codeList);
         //获取用户角色集合
         List<SysRole> userRoleList = roleMapper.getRoleList(user.getId());
         List<String> roleList = userRoleList.stream()
                 .map(SysRole::getRoleKey)
                 .collect(Collectors.toList());
         //将用户角色集合存入Redis
-        StpUtil.getSession().set("roleList",roleList);
+        StpUtil.getSession().set("roleList", roleList);
         return StpUtil.getTokenInfo().getTokenValue();
     }
 
@@ -146,10 +146,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public UserVo getLoginUser() {
         //判断是否登录
-        if (!StpUtil.isLogin()){
-            throw new BusinessException(ResultCode.NOT_LOGIN_ERROR,"用户未登录");
+        if (!StpUtil.isLogin()) {
+            throw new BusinessException(ResultCode.NOT_LOGIN_ERROR, "未登录");
         }
-        return EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
+        UserVo userVo = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
+        if (BeanUtil.isNotEmpty(userVo)) {
+            List<String> roleList = (List<String>) StpUtil.getSession().get("roleList");
+            String userRole = String.join(",", roleList);
+            userVo.setUserRole(userRole);
+            return userVo;
+        }
+        return null;
     }
 
     /**
@@ -165,9 +172,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .eq(User::getUserAccount, addReq.getUserAccount())) > 0) {
             throw new BusinessException(ResultCode.PARAMS_ERROR, "用户名已存在");
         }
+        User user = EntityConverter.copyAndGetSingle(addReq, User.class);
+        // 设置默认用户名
+        user.setUserName("用户" + System.currentTimeMillis());
+        //设置默认密码 12345678
+        user.setUserPassword("dfcc423069838f541756ca8ccc0fe8f7");
         //添加创建人
-        addReq.setCreateName(getLoginUser().getUserAccount());
-        return userMapper.insert(EntityConverter.copyAndGetSingle(addReq, User.class)) > 0;
+        user.setCreateName(getLoginUser().getUserAccount());
+        return userMapper.insert(user) > 0;
     }
 
     /**
@@ -188,9 +200,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (BeanUtil.isEmpty(userMapper.selectById(editReq.getId()))) {
             throw new BusinessException("该用户不存在");
         }
+        User user = EntityConverter.copyAndGetSingle(editReq, User.class);
         //添加更新人
-        editReq.setUpdateName(getLoginUser().getUserAccount());
-        return userMapper.updateById(EntityConverter.copyAndGetSingle(editReq, User.class)) > 0;
+        user.setUpdateName(getLoginUser().getUserAccount());
+        return userMapper.updateById(user) > 0;
     }
 
     /**
@@ -270,7 +283,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             // 先踢下线
             StpUtil.kickout(id);
             // 再封禁账号
-            StpUtil.disable(id,-1);
+            StpUtil.disable(id, -1);
             //禁用用户
             user.setUserStatus("1");
             return userMapper.updateById(user) > 0;
@@ -317,6 +330,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .eq(StrUtil.isNotBlank(queryReq.getUserType()), User::getUserType, queryReq.getUserType()));
         List<UserVo> pageList = EntityConverter.copyAndGetList(userList, UserVo.class);
         return new PageResult<>(pageList, page.getTotal(), page.getPageNum(), page.getPageSize());
+    }
+
+    /**
+     * 修改用户角色关系
+     *
+     * @param userId  用户id
+     * @param roleIds 角色id集合
+     * @return 是否修改成功
+     */
+    @Override
+    public Boolean updateRole(Long userId, List<Long> roleIds) {
+        return null;
+    }
+
+    /**
+     * 获取用户对应角色
+     *
+     * @param userId 用户id
+     * @return 角色列表
+     */
+    @Override
+    public List<SysRole> getUserRoleById(Long userId) {
+        return roleMapper.getRoleList(userId);
+    }
+
+    /**
+     * 获取指定用户的可访问资源
+     *
+     * @param userId 用户id
+     * @return 资源列表
+     */
+    @Override
+    public List<SysResource> getResourceList(Long userId) {
+        return null;
     }
 }
 

@@ -2,9 +2,14 @@ package com.linmo.oj.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmo.oj.common.api.PageResult;
+import com.linmo.oj.model.sysresource.SysResource;
+import com.linmo.oj.model.sysrole.SysRole;
 import com.linmo.oj.model.user.User;
 import com.linmo.oj.model.user.dto.*;
 import com.linmo.oj.model.user.vo.UserVo;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
 * @author ljl
@@ -78,4 +83,19 @@ public interface UserService extends IService<User> {
     PageResult<UserVo> queryByPage(UserQueryDto queryReq);
 
 
+    /**
+     * 修改用户角色关系
+     */
+    @Transactional
+    Boolean updateRole(Long userId, List<Long> roleIds);
+
+    /**
+     * 获取用户对应角色
+     */
+    List<SysRole> getUserRoleById(Long userId);
+
+    /**
+     * 获取指定用户的可访问资源
+     */
+    List<SysResource> getResourceList(Long userId);
 }

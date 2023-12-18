@@ -42,7 +42,6 @@ public class LogInterceptor {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
         // 获取操作内容
         String operation = logRecord.value();
-        // 获取操作人
         // 当前登录用户
         UserVo loginUser = userService.getLoginUser();
         String operator = loginUser.getUserAccount();

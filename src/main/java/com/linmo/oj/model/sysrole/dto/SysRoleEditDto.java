@@ -26,10 +26,4 @@ public class SysRoleEditDto {
 
     @ApiModelProperty(value = "备注")
     private String remark;
-
-    @ApiModelProperty(value = "创建人")
-    private String createName;
-
-    @ApiModelProperty(value = "更新人")
-    private String updateName;
 }

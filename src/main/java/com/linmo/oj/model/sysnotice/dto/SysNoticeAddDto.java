@@ -24,7 +24,4 @@ public class SysNoticeAddDto {
     @ApiModelProperty(value = "备注")
     private String remark;
 
-    @ApiModelProperty(value = "创建人")
-    private String createName;
-
 }

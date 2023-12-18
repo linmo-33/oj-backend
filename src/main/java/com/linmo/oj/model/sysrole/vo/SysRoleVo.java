@@ -3,6 +3,8 @@ package com.linmo.oj.model.sysrole.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * TODO
  *
@@ -27,8 +29,14 @@ public class SysRoleVo {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @ApiModelProperty(value = "创建人")
+    private String createName;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+
     @ApiModelProperty(value = "更新时间")
-    private String updateTime;
+    private Date updateTime;
 
     @ApiModelProperty(value = "更新人")
     private String updateName;

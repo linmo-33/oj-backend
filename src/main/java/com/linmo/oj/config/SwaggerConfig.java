@@ -31,7 +31,7 @@ public class SwaggerConfig {
                 .enable(true)
                 .select()
                 // 过滤条件，扫描指定路径下的文件
-                .apis(RequestHandlerSelectors.basePackage("com.linmo.springboot.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.linmo.oj.controller"))
                 // 指定路径处理，PathSelectors.any()代表不过滤任何路径
                 //.paths(PathSelectors.any())
                 .build();

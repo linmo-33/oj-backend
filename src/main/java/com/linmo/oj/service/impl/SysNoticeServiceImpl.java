@@ -39,10 +39,11 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
 
     @Override
     public Boolean create(SysNoticeAddDto addReq) {
+        SysNotice sysNotice = EntityConverter.copyAndGetSingle(addReq, SysNotice.class);
         //添加创建人
         UserVo loginUser = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
-        addReq.setCreateName(loginUser.getUserAccount());
-        return sysNoticeMapper.insert(EntityConverter.copyAndGetSingle(addReq, SysNotice.class)) > 0;
+        sysNotice.setCreateName(loginUser.getUserAccount());
+        return sysNoticeMapper.insert(sysNotice) > 0;
     }
 
     @Override
@@ -51,10 +52,11 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
         if (BeanUtil.isEmpty(sysNoticeMapper.selectById(editReq.getId()))) {
             throw new BusinessException("该公告不存在");
         }
+        SysNotice sysNotice = EntityConverter.copyAndGetSingle(editReq, SysNotice.class);
         //添加更新人
         UserVo loginUser = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
-        editReq.setUpdateName(loginUser.getUserAccount());
-        return sysNoticeMapper.updateById(EntityConverter.copyAndGetSingle(editReq, SysNotice.class)) > 0;
+        sysNotice.setUpdateName(loginUser.getUserAccount());
+        return sysNoticeMapper.updateById(sysNotice) > 0;
     }
 
     @Override
