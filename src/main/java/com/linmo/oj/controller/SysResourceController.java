@@ -26,7 +26,7 @@ import java.util.List;
  * @since 2023-12-07 15:21
  */
 @RestController
-@Api(tags = "后台资源管理")
+@Api(tags = "SysResource")
 @RequestMapping("/sys_resource")
 public class SysResourceController {
 

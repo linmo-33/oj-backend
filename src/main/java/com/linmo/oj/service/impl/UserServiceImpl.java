@@ -5,6 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -12,19 +13,25 @@ import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.common.api.ResultCode;
 import com.linmo.oj.common.exception.BusinessException;
 import com.linmo.oj.common.utils.EntityConverter;
+import com.linmo.oj.common.utils.MinioUtils;
 import com.linmo.oj.mapper.SysResourceMapper;
 import com.linmo.oj.mapper.SysRoleMapper;
 import com.linmo.oj.mapper.UserMapper;
 import com.linmo.oj.model.sysresource.SysResource;
 import com.linmo.oj.model.sysrole.SysRole;
+import com.linmo.oj.model.sysrole.SysUserRole;
+import com.linmo.oj.model.sysrole.dto.SysUserRoleDto;
 import com.linmo.oj.model.user.User;
 import com.linmo.oj.model.user.dto.*;
 import com.linmo.oj.model.user.vo.UserVo;
+import com.linmo.oj.service.SysUserRoleService;
 import com.linmo.oj.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +52,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private SysResourceMapper resourceMapper;
     @Autowired
     private SysRoleMapper roleMapper;
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
+    @Autowired
+    private MinioUtils minioUtils;
 
 
     /**
@@ -274,43 +285,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return 是否禁用成功
      */
     @Override
-    public Boolean banUser(Long id) {
+    public Boolean banUser(Long id, String status) {
         if (BeanUtil.isNotEmpty(id)) {
             User user = userMapper.selectById(id);
             if (BeanUtil.isEmpty(user)) {
                 throw new BusinessException("该用户不存在");
             }
-            // 先踢下线
-            StpUtil.kickout(id);
-            // 再封禁账号
-            StpUtil.disable(id, -1);
-            //禁用用户
-            user.setUserStatus("1");
+            if ("1".equals(status)) {
+                // 先踢下线
+                StpUtil.kickout(id);
+                // 再封禁账号
+                StpUtil.disable(id, -1);
+                //禁用用户
+                user.setUserStatus("1");
+            } else {
+                //解禁用户
+                StpUtil.untieDisable(id);
+                user.setUserStatus("0");
+            }
+
             return userMapper.updateById(user) > 0;
         }
         return null;
     }
 
-    /**
-     * 解禁用户
-     *
-     * @param id 用户id
-     * @return 是否解禁成功
-     */
-    @Override
-    public Boolean unBanUser(Long id) {
-        if (BeanUtil.isNotEmpty(id)) {
-            User user = userMapper.selectById(id);
-            if (BeanUtil.isEmpty(user)) {
-                throw new BusinessException("该用户不存在");
-            }
-            //解禁用户
-            StpUtil.untieDisable(id);
-            user.setUserStatus("0");
-            return userMapper.updateById(user) > 0;
-        }
-        return null;
-    }
 
     /**
      * 分页查询用户列表
@@ -335,14 +333,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     /**
      * 修改用户角色关系
      *
-     * @param userId  用户id
-     * @param roleIds 角色id集合
+     * @param sysUserRoleDto 用户角色信息
      * @return 是否修改成功
      */
     @Override
-    public Boolean updateRole(Long userId, List<Long> roleIds) {
-        return null;
+    public Boolean updateRole(SysUserRoleDto sysUserRoleDto) {
+        //先删除原来的关系
+        QueryWrapper<SysUserRole> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(SysUserRole::getUserId, sysUserRoleDto.getUserId());
+        sysUserRoleService.remove(wrapper);
+        //建立新关系
+
+        SysUserRole roleRelation = new SysUserRole();
+        roleRelation.setUserId(sysUserRoleDto.getUserId());
+        roleRelation.setRoleId(sysUserRoleDto.getRoleId());
+
+        return sysUserRoleService.save(roleRelation);
     }
+
 
     /**
      * 获取用户对应角色
@@ -363,7 +371,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     @Override
     public List<SysResource> getResourceList(Long userId) {
-        return null;
+        return resourceMapper.getResourceList(userId);
+    }
+
+
+    /**
+     * 上传头像
+     *
+     * @param file 头像文件
+     * @return 头像地址
+     */
+    @Override
+    public String uploadAvatar(MultipartFile file) {
+        // 文件目录：根据业务、用户来划分
+        String uuid = RandomStringUtils.randomAlphanumeric(8);
+        String filename = uuid + "-" + file.getOriginalFilename();
+        String filepath = String.format("%s/%s/%s", "user_avatar", getLoginUser().getId(), filename);
+        try {
+            // 返回可访问地址
+            return minioUtils.uploadFile(file, filepath);
+        } catch (Exception e) {
+            log.error("file upload error, filepath = " + filepath, e);
+            throw new BusinessException(ResultCode.SYSTEM_ERROR, "上传失败");
+        }
     }
 }
 

@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.model.sysresource.SysResource;
 import com.linmo.oj.model.sysrole.SysRole;
+import com.linmo.oj.model.sysrole.dto.SysUserRoleDto;
 import com.linmo.oj.model.user.User;
 import com.linmo.oj.model.user.dto.*;
 import com.linmo.oj.model.user.vo.UserVo;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -70,12 +72,8 @@ public interface UserService extends IService<User> {
     /**
      * 禁用用户
      */
-    Boolean banUser(Long id);
+    Boolean banUser(Long i, String status);
 
-    /**
-     * 解禁用户
-     */
-    Boolean unBanUser(Long id);
 
     /**
      * 分页查询用户列表
@@ -87,7 +85,7 @@ public interface UserService extends IService<User> {
      * 修改用户角色关系
      */
     @Transactional
-    Boolean updateRole(Long userId, List<Long> roleIds);
+    Boolean updateRole(SysUserRoleDto sysUserRoleDto);
 
     /**
      * 获取用户对应角色
@@ -98,4 +96,10 @@ public interface UserService extends IService<User> {
      * 获取指定用户的可访问资源
      */
     List<SysResource> getResourceList(Long userId);
+
+
+    /**
+     * 上传头像
+     */
+    String uploadAvatar(MultipartFile file);
 }

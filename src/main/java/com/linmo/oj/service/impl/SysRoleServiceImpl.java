@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -12,6 +13,8 @@ import com.linmo.oj.common.api.ResultCode;
 import com.linmo.oj.common.exception.BusinessException;
 import com.linmo.oj.common.utils.EntityConverter;
 import com.linmo.oj.mapper.SysRoleMapper;
+import com.linmo.oj.model.sysresource.SysRoleResource;
+import com.linmo.oj.model.sysresource.dto.SysRoleResourceDto;
 import com.linmo.oj.model.sysrole.SysRole;
 import com.linmo.oj.model.sysrole.dto.SysRoleAddDto;
 import com.linmo.oj.model.sysrole.dto.SysRoleEditDto;
@@ -23,6 +26,7 @@ import com.linmo.oj.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +39,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
     implements SysRoleService{
     @Autowired
     private SysRoleMapper sysRoleMapper;
+    @Autowired
+    private SysRoleResourceServiceImpl roleResourceRelationService;
 
 
     @Override
@@ -105,6 +111,23 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
             return EntityConverter.copyAndGetSingle(sysRole, SysRoleVo.class);
         }
         return null;
+    }
+
+    @Override
+    public Boolean updateResource(SysRoleResourceDto sysRoleResourceDto) {
+        //先删除原有关系
+        QueryWrapper<SysRoleResource> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(SysRoleResource::getRoleId,sysRoleResourceDto.getRoleId());
+        roleResourceRelationService.remove(wrapper);
+        //批量插入新关系
+        List<SysRoleResource> relationList = new ArrayList<>();
+        for (Long resourceId : sysRoleResourceDto.getResourceIds()) {
+            SysRoleResource relation = new SysRoleResource();
+            relation.setRoleId(sysRoleResourceDto.getRoleId());
+            relation.setResourceId(resourceId);
+            relationList.add(relation);
+        }
+        return roleResourceRelationService.saveBatch(relationList);
     }
 }
 

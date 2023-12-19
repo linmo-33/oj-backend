@@ -56,6 +56,7 @@ public class LogInterceptor {
         sysLog.setOperator(operator);
         sysLog.setUrl(url);
         sysLog.setIp(ip);
+        sysLog.setResult(result.toString());
         // 数据库记录日志
         sysLogService.save(sysLog);
         log.info("操作人：{}，操作：{}，请求路径：{}，IP地址：{}，执行结果：{}", operator, operation, url, ip, result);

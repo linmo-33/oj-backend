@@ -12,10 +12,10 @@ spring:
     password: 32Qwer#1966@
     lettuce:
       pool:
-        max-active: 500
+        max-active: 8
         max-wait: 1000ms
-        max-idle: 100
-        min-idle: 0
+        max-idle: 30
+        min-idle: 10
 
 logging:
   level:
@@ -24,7 +24,8 @@ logging:
 
 #minio 配置
 minio:
-  endpoint: http://ikuns.live:9000
-  access-key: xxx
-  secret-key: xxx
-  bucketName: xxx
+  url: http://minioview.ikuns.live
+  endpoint: http://ikuns.live:9090
+  access-key: minious
+  secret-key: qwe2580@
+  bucketName: oj-b

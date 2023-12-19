@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2023-12-07 15:21
  */
 @RestController
-@Api(tags = "题目管理")
+@Api(tags = "Question")
 @RequestMapping("/question")
 public class QuestionController {
 

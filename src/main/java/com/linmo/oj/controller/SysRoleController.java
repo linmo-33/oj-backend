@@ -5,6 +5,8 @@ import com.linmo.oj.common.aop.LogRecord;
 import com.linmo.oj.common.api.BaseResponse;
 import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.common.api.ResultUtils;
+import com.linmo.oj.common.utils.EntityConverter;
+import com.linmo.oj.model.sysresource.dto.SysRoleResourceDto;
 import com.linmo.oj.model.sysrole.dto.SysRoleAddDto;
 import com.linmo.oj.model.sysrole.dto.SysRoleEditDto;
 import com.linmo.oj.model.sysrole.dto.SysRoleQueryDto;
@@ -14,10 +16,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * TODO
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-12-07 15:21
  */
 @RestController
-@Api(tags = "后台角色管理")
+@Api(tags = "SysRole")
 @RequestMapping("/sys_role")
 public class SysRoleController {
 
@@ -72,5 +73,19 @@ public class SysRoleController {
         return ResultUtils.success(sysRoleService.queryByPage(sysRoleQueryDto));
     }
 
+    @ApiOperation("获取所有角色")
+    @GetMapping(value = "/listAll")
+    @SaCheckPermission(value = "sysRole.listAll", orRole = "admin")
+    public BaseResponse<List<SysRoleVo>> listAll() {
+        return ResultUtils.success(EntityConverter.copyAndGetList(sysRoleService.list(), SysRoleVo.class));
+    }
 
+
+    @ApiOperation(value = "给角色分配资源")
+    @PostMapping(value = "/updateRoleResource")
+    @LogRecord(value = "给角色分配资源")
+    @SaCheckPermission(value = "sysRole.updateResource", orRole = "admin")
+    public BaseResponse<Boolean> updateRoleResource(@RequestBody SysRoleResourceDto sysRoleResourceDto) {
+        return ResultUtils.success(sysRoleService.updateResource(sysRoleResourceDto));
+    }
 }

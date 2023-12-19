@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-12-13 15:32
  */
 @RestController
-@Api(tags = "后台日志管理")
+@Api(tags = "SysLog")
 @RequestMapping("/sys_log")
 public class SysLogController {
 

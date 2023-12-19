@@ -2,11 +2,13 @@ package com.linmo.oj.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmo.oj.common.api.PageResult;
+import com.linmo.oj.model.sysresource.dto.SysRoleResourceDto;
 import com.linmo.oj.model.sysrole.SysRole;
 import com.linmo.oj.model.sysrole.dto.SysRoleAddDto;
 import com.linmo.oj.model.sysrole.dto.SysRoleEditDto;
 import com.linmo.oj.model.sysrole.dto.SysRoleQueryDto;
 import com.linmo.oj.model.sysrole.vo.SysRoleVo;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * @author ljl
@@ -39,6 +41,13 @@ public interface SysRoleService extends IService<SysRole> {
      * 根据id查询角色信息
      */
     SysRoleVo queryById(Long id);
+
+
+    /**
+     * 给角色分配资源
+     */
+    @Transactional
+    Boolean updateResource(SysRoleResourceDto sysRoleResourceDto);
 
 
 }

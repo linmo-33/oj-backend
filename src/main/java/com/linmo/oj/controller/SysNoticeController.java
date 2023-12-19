@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-12-07 15:21
  */
 @RestController
-@Api(tags = "公告管理")
+@Api(tags = "SysNotice")
 @RequestMapping("/sys_notice")
 public class SysNoticeController {
 

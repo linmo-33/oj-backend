@@ -5,6 +5,8 @@ import com.linmo.oj.common.aop.LogRecord;
 import com.linmo.oj.common.api.BaseResponse;
 import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.common.api.ResultUtils;
+import com.linmo.oj.model.sysrole.SysRole;
+import com.linmo.oj.model.sysrole.dto.SysUserRoleDto;
 import com.linmo.oj.model.user.dto.*;
 import com.linmo.oj.model.user.vo.UserVo;
 import com.linmo.oj.service.UserService;
@@ -12,10 +14,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * TODO
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-12-07 15:21
  */
 @RestController
-@Api(tags = "后台用户管理")
+@Api(tags = "User")
 @RequestMapping("/user")
 public class UserController {
 
@@ -91,19 +93,12 @@ public class UserController {
     public BaseResponse<Boolean> updatePassword(@Validated @RequestBody UserUpdatePasswordDto userUpdatePasswordDto) {
         return ResultUtils.success(userService.updatePassword(userUpdatePasswordDto));}
 
-    @ApiOperation(value = "禁用用户")
-    @PostMapping (value = "/banUser")
-    @LogRecord(value = "禁用用户")
-    @SaCheckPermission(value = "user.banUser", orRole = "admin")
-    public BaseResponse<Boolean> banUser(Long id) {
-        return ResultUtils.success(userService.banUser(id));}
-
-    @ApiOperation(value = "解禁用户")
-    @PostMapping (value = "/unBanUser")
-    @LogRecord(value = "解禁用户")
-    @SaCheckPermission(value = "user.unBanUser", orRole = "admin")
-    public BaseResponse<Boolean> unBanUser(Long id) {
-        return ResultUtils.success(userService.unBanUser(id));}
+    @ApiOperation(value = "修改用户状态")
+    @PostMapping (value = "/updateStatus")
+    @LogRecord(value = "修改用户状态")
+    @SaCheckPermission(value = "user.updateStatus", orRole = "admin")
+    public BaseResponse<Boolean> banUser(Long id,String status) {
+        return ResultUtils.success(userService.banUser(id,status));}
 
     @ApiOperation(value = "分页查询用户")
     @PostMapping (value = "/queryList")
@@ -111,6 +106,26 @@ public class UserController {
     public BaseResponse<PageResult<UserVo>> queryListUser(@Validated @RequestBody UserQueryDto userQueryDto) {
         return ResultUtils.success(userService.queryByPage(userQueryDto));}
 
+    @ApiOperation(value = "上传头像")
+    @PostMapping (value = "/uploadAvatar")
+    @LogRecord(value = "上传头像")
+    public BaseResponse<String> uploadAvatar(@RequestPart("file") MultipartFile multipartFile) {
+        return ResultUtils.success(userService.uploadAvatar(multipartFile));}
+
+
+    @ApiOperation(value = "给用户分配角色")
+    @PostMapping (value = "/updateRole")
+    @LogRecord(value = "修改用户状态")
+    @SaCheckPermission(value = "user.updateRole", orRole = "admin")
+    public BaseResponse<Boolean> updateRole(@RequestBody SysUserRoleDto sysUserRoleDto) {
+        return ResultUtils.success(userService.updateRole(sysUserRoleDto));}
+
+    @ApiOperation(value = "获取指定用户的角色")
+    @PostMapping (value = "/getRole")
+    @LogRecord(value = "获取指定用户的角色")
+    @SaCheckPermission(value = "user.getRole", orRole = "admin")
+    public BaseResponse<List<SysRole>> getRole(Long id) {
+        return ResultUtils.success(userService.getUserRoleById(id));}
 
 
 }

@@ -41,6 +41,12 @@ public class SysLog implements Serializable {
     private String ip;
 
     /**
+     * 执行结果
+     */
+    @TableField(value = "result")
+    private String result;
+
+    /**
      * 操作人
      */
     @TableField(value = "operator")

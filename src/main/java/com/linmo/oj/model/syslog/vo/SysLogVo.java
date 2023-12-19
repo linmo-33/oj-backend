@@ -25,6 +25,9 @@ public class SysLogVo {
     @ApiModelProperty(value = "IP地址")
     private String ip;
 
+    @ApiModelProperty(value = "执行结果")
+    private String result;
+
     @ApiModelProperty(value = "操作人")
     private String operator;
 
