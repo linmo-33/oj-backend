@@ -9,9 +9,13 @@ import java.util.stream.Collectors;
 
 @Getter
 public enum ExecuteCodeStatusEnum {
+
     NO_AUTH("无权限", 3),
+
     RUN_FAILED("运行失败", 2),
+
     COMPILE_FAILED("编译失败", 1),
+
     SUCCESS("成功", 0);
 
     private final String msg;

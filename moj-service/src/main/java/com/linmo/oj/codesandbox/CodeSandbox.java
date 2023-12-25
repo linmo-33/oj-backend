@@ -6,9 +6,9 @@ import com.linmo.oj.codesandbox.model.ExecuteCodeResponse;
 public interface CodeSandbox {
 
     /**
-     * 带AK/SK的
-     * @param executeCodeRequest
-     * @return
+     *
+     * @param executeCodeRequest 请求参数
+     * @return 执行结果
      */
     ExecuteCodeResponse executeCode(ExecuteCodeRequest executeCodeRequest);
 }

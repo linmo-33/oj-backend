@@ -17,3 +17,15 @@ logging:
   level:
     root: info
     com.macro.mall: info
+
+#minio 配置
+minio:
+  url: http://minioview.ikuns.live
+  endpoint: http://ikuns.live:9090
+  access-key: minious
+  secret-key: qwe2580@
+  bucketName: oj-b
+
+# 代码沙箱配置
+codesandbox:
+  type: remote

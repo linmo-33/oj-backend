@@ -13,10 +13,7 @@ import com.linmo.oj.service.SysNoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -52,17 +49,17 @@ public class SysNoticeController {
     }
 
     @ApiOperation(value = "删除公告")
-    @PostMapping(value = "/delete")
+    @GetMapping(value = "/delete")
     @LogRecord(value = "删除公告")
     @SaCheckPermission(value = "sysNotice.delete", orRole = "admin")
-    public BaseResponse<Boolean> deleteSysNotice(Long id) {
+    public BaseResponse<Boolean> deleteSysNotice(@RequestParam("id") Long id) {
         return ResultUtils.success(sysNoticeService.delete(id));
     }
 
     @ApiOperation(value = "根据id获取公告")
-    @PostMapping(value = "/queryById")
+    @GetMapping(value = "/queryById")
     @SaCheckPermission(value = "sysNotice.queryById", orRole = "admin")
-    public BaseResponse<SysNoticeVo> querySysNoticeById(Long id) {
+    public BaseResponse<SysNoticeVo> querySysNoticeById(@RequestParam("id") Long id) {
         return ResultUtils.success(sysNoticeService.queryById(id));
     }
 

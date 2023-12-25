@@ -7,7 +7,7 @@ server:
 
 spring:
   application:
-    name: springboot-init
+    name: moj-service
   profiles:
     active: dev
   #  main:

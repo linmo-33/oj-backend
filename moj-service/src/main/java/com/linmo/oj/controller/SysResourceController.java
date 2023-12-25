@@ -51,10 +51,10 @@ public class SysResourceController {
     }
 
     @ApiOperation(value = "删除资源")
-    @PostMapping(value = "/delete")
+    @GetMapping(value = "/delete")
     @LogRecord(value = "删除资源")
     @SaCheckPermission(value = "sysResource.delete", orRole = "admin")
-    public BaseResponse<Boolean> deleteSysResource(Long id) {
+    public BaseResponse<Boolean> deleteSysResource(@RequestParam("id") Long id) {
         return ResultUtils.success(sysResourceService.delete(id));
     }
 

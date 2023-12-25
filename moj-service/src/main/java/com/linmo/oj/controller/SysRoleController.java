@@ -52,17 +52,17 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "删除角色")
-    @PostMapping(value = "/delete")
+    @GetMapping(value = "/delete")
     @LogRecord(value = "删除角色")
     @SaCheckPermission(value = "sysRole.delete", orRole = "admin")
-    public BaseResponse<Boolean> deleteSysRole(Long id) {
+    public BaseResponse<Boolean> deleteSysRole(@RequestParam("id") Long id) {
         return ResultUtils.success(sysRoleService.delete(id));
     }
 
     @ApiOperation(value = "根据id获取角色")
-    @PostMapping(value = "/queryById")
+    @GetMapping(value = "/queryById")
     @SaCheckPermission(value = "sysRole.queryById", orRole = "admin")
-    public BaseResponse<SysRoleVo> querySysRoleById(Long id) {
+    public BaseResponse<SysRoleVo> querySysRoleById(@RequestParam("id") Long id) {
         return ResultUtils.success(sysRoleService.queryById(id));
     }
 

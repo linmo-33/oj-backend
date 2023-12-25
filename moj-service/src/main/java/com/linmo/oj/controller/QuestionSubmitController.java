@@ -1,6 +1,5 @@
 package com.linmo.oj.controller;
 
-import com.linmo.oj.common.aop.LogRecord;
 import com.linmo.oj.common.api.BaseResponse;
 import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.common.api.ResultUtils;
@@ -33,14 +32,13 @@ public class QuestionSubmitController {
 
     @ApiOperation(value = "提交题目")
     @PostMapping(value = "/submit")
-    @LogRecord(value = "提交题目")
     public BaseResponse<QuestionSubmit> doQuestionSubmit(@Validated @RequestBody QuestionSubmitAddDto questionSubmitAddDto) {
         return ResultUtils.success(questionSubmitService.doQuestionSubmit(questionSubmitAddDto));
     }
 
     @ApiOperation(value = "根据id获取提交记录")
-    @GetMapping(value = "/queryById/{id}")
-    public BaseResponse<QuestionSubmitVo> queryQuestionSubmitById(@PathVariable("id") Long id) {
+    @GetMapping(value = "/queryById")
+    public BaseResponse<QuestionSubmitVo> queryQuestionSubmitById(@RequestParam("id") Long id) {
         return ResultUtils.success(questionSubmitService.queryById(id));
     }
 

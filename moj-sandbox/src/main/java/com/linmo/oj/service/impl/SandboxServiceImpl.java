@@ -5,6 +5,7 @@ import com.linmo.oj.model.dto.ExecuteCodeResponse;
 import com.linmo.oj.service.SandboxService;
 import com.linmo.oj.template.cpp.CppSandboxTemplate;
 import com.linmo.oj.template.java.JavaSandboxTemplate;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -14,10 +15,11 @@ import java.util.List;
  * @description TODO
  * @date 2023-11-26 17:47
  */
+@Service
 public class SandboxServiceImpl implements SandboxService {
 
     @Resource
-    private JavaSandboxTemplate javaNativeAcmSandbox;
+    private JavaSandboxTemplate javaNativeArgsSandbox;
     @Resource
     private CppSandboxTemplate cppNativeAcmSandbox;
 
@@ -29,7 +31,7 @@ public class SandboxServiceImpl implements SandboxService {
 
         switch (language){
             case "java":
-                return javaNativeAcmSandbox.executeJavaCode(inputList, code);
+                return javaNativeArgsSandbox.executeJavaCode(inputList, code);
             case "cpp":
                 return cppNativeAcmSandbox.executeCppCode(inputList, code);
             default:

@@ -12,7 +12,6 @@
             <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="questionId" column="question_id" jdbcType="BIGINT"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
-            <result property="createName" column="create_name" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateName" column="update_name" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>

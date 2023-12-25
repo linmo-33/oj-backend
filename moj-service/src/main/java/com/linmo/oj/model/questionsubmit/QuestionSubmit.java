@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 题目提交
@@ -40,7 +41,7 @@ public class QuestionSubmit implements Serializable {
     private String judgeInfo;
 
     /**
-     * 判题状态0-待判题、1-判题中、2-成功、3-失败
+     * 判题状态0-待判题、1-判题中、2-失败、3-成功
      */
     @TableField(value = "status")
     private Integer status;
@@ -57,11 +58,6 @@ public class QuestionSubmit implements Serializable {
     @TableField(value = "user_id")
     private Long userId;
 
-    /**
-     * 创建人
-     */
-    @TableField(value = "create_name")
-    private String createName;
 
     /**
      * 创建时间

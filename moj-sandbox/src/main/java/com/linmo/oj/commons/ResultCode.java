@@ -1,4 +1,4 @@
-package com.linmo.oj.common.api;
+package com.linmo.oj.commons;
 
 /**
  * 自定义错误码
@@ -14,8 +14,6 @@ public enum ResultCode {
     SYSTEM_ERROR(500, "系统内部异常"),
     OPERATION_ERROR(501, "操作失败"),
 
-    //服务器内部异常
-    INTERNAL_SERVER_ERROR(505, "未知的服务器内部异常"),
 
     //OJ相关
     SUBMIT_ERROR(20001, "提交判题失败"),

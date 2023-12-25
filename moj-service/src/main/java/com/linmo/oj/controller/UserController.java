@@ -5,8 +5,8 @@ import com.linmo.oj.common.aop.LogRecord;
 import com.linmo.oj.common.api.BaseResponse;
 import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.common.api.ResultUtils;
-import com.linmo.oj.model.sysrole.SysRole;
 import com.linmo.oj.model.sysrole.dto.SysUserRoleDto;
+import com.linmo.oj.model.sysrole.vo.SysRoleVo;
 import com.linmo.oj.model.user.dto.*;
 import com.linmo.oj.model.user.vo.UserVo;
 import com.linmo.oj.service.UserService;
@@ -75,16 +75,16 @@ public class UserController {
     }
 
     @ApiOperation(value = "删除用户")
-    @PostMapping (value = "/delete")
+    @GetMapping (value = "/delete")
     @LogRecord(value = "删除用户")
     @SaCheckPermission(value = "user.delete", orRole = "admin")
-    public BaseResponse<Boolean> deleteUser(Long id) {
+    public BaseResponse<Boolean> deleteUser(@RequestParam("id") Long id) {
         return ResultUtils.success(userService.delete(id));}
 
     @ApiOperation(value = "根据id获取用户")
-    @PostMapping (value = "/queryById")
+    @GetMapping (value = "/queryById")
     @SaCheckPermission(value = "user.queryById", orRole = "admin")
-    public BaseResponse<UserVo> queryUserById(Long id) {
+    public BaseResponse<UserVo> queryUserById(@RequestParam("id") Long id) {
         return ResultUtils.success(userService.queryById(id));}
 
     @ApiOperation(value = "修改密码")
@@ -121,10 +121,10 @@ public class UserController {
         return ResultUtils.success(userService.updateRole(sysUserRoleDto));}
 
     @ApiOperation(value = "获取指定用户的角色")
-    @PostMapping (value = "/getRole")
+    @GetMapping (value = "/getRole")
     @LogRecord(value = "获取指定用户的角色")
     @SaCheckPermission(value = "user.getRole", orRole = "admin")
-    public BaseResponse<List<SysRole>> getRole(Long id) {
+    public BaseResponse<List<SysRoleVo>> getRole(@RequestParam("id") Long id) {
         return ResultUtils.success(userService.getUserRoleById(id));}
 
 

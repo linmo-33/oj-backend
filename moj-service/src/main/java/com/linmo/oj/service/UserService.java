@@ -3,8 +3,8 @@ package com.linmo.oj.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.model.sysresource.SysResource;
-import com.linmo.oj.model.sysrole.SysRole;
 import com.linmo.oj.model.sysrole.dto.SysUserRoleDto;
+import com.linmo.oj.model.sysrole.vo.SysRoleVo;
 import com.linmo.oj.model.user.User;
 import com.linmo.oj.model.user.dto.*;
 import com.linmo.oj.model.user.vo.UserVo;
@@ -90,7 +90,7 @@ public interface UserService extends IService<User> {
     /**
      * 获取用户对应角色
      */
-    List<SysRole> getUserRoleById(Long userId);
+    List<SysRoleVo> getUserRoleById(Long userId);
 
     /**
      * 获取指定用户的可访问资源

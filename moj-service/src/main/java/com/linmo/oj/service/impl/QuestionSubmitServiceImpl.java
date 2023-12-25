@@ -9,7 +9,6 @@ import com.github.pagehelper.PageHelper;
 import com.linmo.oj.common.api.PageResult;
 import com.linmo.oj.common.api.ResultCode;
 import com.linmo.oj.common.exception.BusinessException;
-import com.linmo.oj.common.utils.EntityConverter;
 import com.linmo.oj.mapper.QuestionMapper;
 import com.linmo.oj.mapper.QuestionSubmitMapper;
 import com.linmo.oj.model.enums.LanguageEnum;
@@ -22,6 +21,7 @@ import com.linmo.oj.model.questionsubmit.vo.QuestionSubmitVo;
 import com.linmo.oj.model.questionsubmit.vo.SubmitSummaryVo;
 import com.linmo.oj.model.user.User;
 import com.linmo.oj.model.user.vo.UserVo;
+import com.linmo.oj.service.JudgeService;
 import com.linmo.oj.service.QuestionSubmitService;
 import com.linmo.oj.service.UserService;
 import org.springframework.stereotype.Service;
@@ -41,6 +41,8 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
     @Resource
     private QuestionMapper questionMapper;
+    @Resource
+    private JudgeService judgeService;
     @Resource
     private UserService userService;
 
@@ -87,18 +89,18 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
             throw new BusinessException("数据插入失败");
         }
         // 执行判题服务
-        return null;
+        return judgeService.doJudge(questionSubmit);
     }
 
     @Override
     public PageResult<QuestionSubmitVo> queryByPage(QuestionSubmitQueryDto queryReq) {
         Long userId = userService.getLoginUser().getId();
         Page<User> page = PageHelper.startPage(queryReq.getPageIndex(), queryReq.getPageSize());
-        //分页条件查询公告信息
-        List<QuestionSubmit> roleList = baseMapper.selectList(new LambdaQueryWrapper<QuestionSubmit>()
+        //分页条件查询提交记录
+        List<QuestionSubmit> questionSubmitListList = baseMapper.selectList(new LambdaQueryWrapper<QuestionSubmit>()
                 .select(QuestionSubmit.class, item -> !item.getColumn().equals("code"))
                 .eq(QuestionSubmit::getUserId, userId).eq(QuestionSubmit::getQuestionId, queryReq.getQuestionId()));
-        List<QuestionSubmitVo> pageList = EntityConverter.copyAndGetList(roleList, QuestionSubmitVo.class);
+        List<QuestionSubmitVo> pageList = questionSubmitListList.stream().map(QuestionSubmitVo::objToVo).collect(Collectors.toList());
         return new PageResult<>(pageList, page.getTotal(), page.getPageNum(), page.getPageSize());
     }
 
@@ -155,7 +157,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
             if (BeanUtil.isEmpty(questionSubmit)) {
                 throw new BusinessException("没有提交记录");
             }
-            return EntityConverter.copyAndGetSingle(questionSubmit, QuestionSubmitVo.class);
+            return QuestionSubmitVo.objToVo(questionSubmit);
         }
         return null;
     }

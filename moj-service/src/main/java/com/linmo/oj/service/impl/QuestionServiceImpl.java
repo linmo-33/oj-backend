@@ -28,13 +28,14 @@ import com.linmo.oj.model.user.User;
 import com.linmo.oj.model.user.vo.UserVo;
 import com.linmo.oj.service.QuestionService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.linmo.oj.model.question.vo.QuestionVo.objToVo;
 
 /**
  * @author ljl
@@ -206,10 +207,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
      *
      */
     public QuestionVo getQuestionVoPage(Question question){
-        QuestionVo questionVo = new QuestionVo();
-        BeanUtils.copyProperties(question, questionVo);
-        questionVo.setTags(JSONUtil.toList(question.getTags(), String.class));
-        questionVo.setJudgeConfig(JSONUtil.toBean(question.getJudgeConfig(), JudgeConfig.class));
+        QuestionVo questionVo = objToVo(question);
         UserVo  loginUser = EntityConverter.copyAndGetSingle(StpUtil.getSession().get("loginUser"), UserVo.class);
         //查询当前用户历史做题信息（已通过、尝试过、未开始）
         QuestionSubmit submit = questionSubmitMapper.selectOne(new QueryWrapper<QuestionSubmit>()

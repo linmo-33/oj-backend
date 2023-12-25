@@ -50,16 +50,16 @@ public class QuestionController {
     }
 
     @ApiOperation(value = "删除题目")
-    @PostMapping(value = "/delete")
+    @GetMapping(value = "/delete")
     @LogRecord(value = "删除题目")
     @SaCheckPermission(value = "question.delete", orRole = "admin")
-    public BaseResponse<Boolean> deleteQuestion(Long id) {
+    public BaseResponse<Boolean> deleteQuestion(@RequestParam("id") Long id) {
         return ResultUtils.success(questionService.delete(id));
     }
 
     @ApiOperation(value = "根据id获取题目")
-    @PostMapping(value = "/queryById")
-    public BaseResponse<QuestionVo> queryQuestionById(Long id) {
+    @GetMapping(value = "/queryById")
+    public BaseResponse<QuestionVo> queryQuestionById(@RequestParam("id") Long id) {
         return ResultUtils.success(questionService.queryById(id));
     }
 

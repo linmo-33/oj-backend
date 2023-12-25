@@ -29,3 +29,7 @@ minio:
   access-key: minious
   secret-key: qwe2580@
   bucketName: oj-b
+
+# 代码沙箱配置
+codesandbox:
+  type: remote

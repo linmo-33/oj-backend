@@ -4,8 +4,8 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.dfa.FoundWord;
 import cn.hutool.dfa.WordTree;
-import com.linmo.oj.common.api.ResultCode;
-import com.linmo.oj.common.exception.BusinessException;
+import com.linmo.oj.commons.ResultCode;
+import com.linmo.oj.commons.exception.BusinessException;
 import com.linmo.oj.model.dto.ExecuteCodeResponse;
 import com.linmo.oj.model.dto.ExecuteResult;
 import com.linmo.oj.model.enums.ExecuteCodeStatusEnum;
@@ -122,9 +122,9 @@ public abstract class JavaSandboxTemplate {
      */
     protected ExecuteResult compile(File codeFile) throws IOException {
         // Linux下的命令
-        String compileCmd = String.format("/software/jdk1.8.0_181/bin/javac -encoding utf-8 %s", codeFile.getAbsolutePath());
+        //String compileCmd = String.format("/software/jdk1.8.0_181/bin/javac -encoding utf-8 %s", codeFile.getAbsolutePath());
         // Windows下的命令
-//         String compileCmd = String.format("javac -encoding utf-8 %s", codeFile.getAbsolutePath());
+        String compileCmd = String.format("javac -encoding utf-8 %s", codeFile.getAbsolutePath());
 
         //创建并执行process
         log.info("执行命令：{}", compileCmd);
@@ -160,6 +160,8 @@ public abstract class JavaSandboxTemplate {
      * @param dir 代码目录
      */
     protected void clearFile(File codeFile, String dir){
+        //解释：如果是在IDEA中运行，那么代码文件的父目录就是项目的根目录，不需要删除
+        //如果是在服务器上运行，那么代码文件的父目录就是临时目录，需要删除
         if (codeFile.getParentFile() != null) {
             boolean del = FileUtil.del(dir);
             log.info("删除{}: {}", del ? "成功" : "失败", dir);

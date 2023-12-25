@@ -60,28 +60,6 @@ public class QuestionVo {
 
 
     /**
-     * 包装类转对象
-     *
-     * @param questionVO 包装类
-     * @return 对象
-     */
-    public static Question voToObj(QuestionVo questionVO) {
-        if (questionVO == null) {
-            return null;
-        }
-        Question question = EntityConverter.copyAndGetSingle(questionVO, Question.class);
-        List<String> tagList = questionVO.getTags();
-        if (tagList != null) {
-            question.setTags(JSONUtil.toJsonStr(tagList));
-        }
-        JudgeConfig voJudgeConfig = questionVO.getJudgeConfig();
-        if (voJudgeConfig != null) {
-            question.setJudgeConfig(JSONUtil.toJsonStr(voJudgeConfig));
-        }
-        return question;
-    }
-
-    /**
      * 对象转包装类
      *
      * @param question 对象
@@ -92,10 +70,9 @@ public class QuestionVo {
             return null;
         }
         QuestionVo questionVO = EntityConverter.copyAndGetSingle(question, QuestionVo.class);
-        List<String> tagList = JSONUtil.toList(question.getTags(), String.class);
-        questionVO.setTags(tagList);
-        String judgeConfigStr = question.getJudgeConfig();
-        questionVO.setJudgeConfig(JSONUtil.toBean(judgeConfigStr, JudgeConfig.class));
+        questionVO.setTags(JSONUtil.toList(question.getTags(), String.class));
+        questionVO.setJudgeConfig(JSONUtil.toBean(question.getJudgeConfig(), JudgeConfig.class));
+        questionVO.setJudgeCase(JSONUtil.toList(question.getJudgeCase(), JudgeCase.class));
         return questionVO;
     }
 

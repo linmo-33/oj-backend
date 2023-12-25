@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StopWatch;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +76,8 @@ public class ProcessUtils {
         List<String> outputList = new ArrayList<>();
         String outputLine;
         while ((outputLine = userCodeOutput.readLine()) != null) {
+            // 使用 trim() 移除末尾的换行符
+            outputLine = outputLine.trim();
             outputList.add(outputLine);
         }
         userCodeOutput.close();
@@ -106,14 +109,14 @@ public class ProcessUtils {
     public static String getProcessOutput(InputStream inputStream) throws IOException {
         // 分批获取进程的正常输出
         // Linux写法
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         //Windows写法
-        // BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "GBK"));
+         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         StringBuilder outputSb = new StringBuilder();
         // 逐行读取
         String outputLine;
         while ((outputLine = bufferedReader.readLine()) != null) {
-            outputSb.append(outputLine).append("\n");
+            outputSb.append(outputLine);
         }
         bufferedReader.close();
         return outputSb.toString();

@@ -21,6 +21,7 @@ import com.linmo.oj.model.sysresource.SysResource;
 import com.linmo.oj.model.sysrole.SysRole;
 import com.linmo.oj.model.sysrole.SysUserRole;
 import com.linmo.oj.model.sysrole.dto.SysUserRoleDto;
+import com.linmo.oj.model.sysrole.vo.SysRoleVo;
 import com.linmo.oj.model.user.User;
 import com.linmo.oj.model.user.dto.*;
 import com.linmo.oj.model.user.vo.UserVo;
@@ -359,8 +360,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return 角色列表
      */
     @Override
-    public List<SysRole> getUserRoleById(Long userId) {
-        return roleMapper.getRoleList(userId);
+    public List<SysRoleVo> getUserRoleById(Long userId) {
+        return EntityConverter.copyAndGetList(roleMapper.getRoleList(userId), SysRoleVo.class);
     }
 
     /**

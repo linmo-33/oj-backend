@@ -16,15 +16,15 @@ import static com.linmo.oj.constants.SandBoxConstants.TIME_OUT;
 
 /**
  * @author ljl
- * @description TODO
- * @date 2023-11-26 17:49
+ * @description ACM模式的Java沙箱
+ * @date 2023-12-22 17:49
  */
 @Service
 @Slf4j
 public class JavaNativeAcmSandbox extends JavaSandboxTemplate {
-    @Value("${antares.sandbox.security-manager-path:/www/wwwroot/oj-backend/security}")
+    @Value("${sandbox.security-manager-path:/www/wwwroot/oj-backend/security}")
     private String SECURITY_MANAGER_PATH;
-    @Value("${antares.sandbox.security-manager-class-name:MySecurityManager}")
+    @Value("${sandbox.security-manager-class-name:MySecurityManager}")
     private String SECURITY_MANAGER_CLASS_NAME;
 
     @Override
@@ -55,6 +55,7 @@ public class JavaNativeAcmSandbox extends JavaSandboxTemplate {
 
             ExecuteResult executeResult = null;
             try {
+
                 executeResult = ProcessUtils.getAcmProcessMessage(runProcess, input);
             } catch (IOException e){
                 log.error("执行出错: {}", e.toString());

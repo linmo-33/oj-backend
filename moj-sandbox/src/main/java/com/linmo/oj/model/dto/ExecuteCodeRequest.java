@@ -12,10 +12,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExecuteCodeRequest {
-    //一组输入
+
+    /**
+     * 输入数据
+     */
     private List<String> inputList;
-    //提交代码
+
+    /**
+     * 代码
+     */
     private String code;
-    //执行语言
+
+    /**
+     * 语言
+     */
     private String language;
 }

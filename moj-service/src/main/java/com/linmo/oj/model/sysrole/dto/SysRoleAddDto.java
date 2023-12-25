@@ -19,8 +19,6 @@ public class SysRoleAddDto {
     @ApiModelProperty(value = "角色权限字符串")
     private String roleKey;
 
-    @ApiModelProperty(value = "角色状态（0正常 1停用）")
-    private String status;
 
     @ApiModelProperty(value = "备注")
     private String remark;
