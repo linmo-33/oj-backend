@@ -17,11 +17,8 @@ import java.util.List;
 @Data
 public class QuestionQueryDto extends Pager {
 
-    @ApiModelProperty(value = "题目标题")
-    private String title;
-
-    @ApiModelProperty(value = "题目内容")
-    private String content;
+    @ApiModelProperty(value = "题目关键字")
+    private String keyword;
 
     @ApiModelProperty(value = "题目难度(0简单，1中等，2困难)")
     private String difficulty;

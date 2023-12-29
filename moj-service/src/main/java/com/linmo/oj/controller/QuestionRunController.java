@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@Api(tags = "用户接口")
+@Api(tags = "题目运行接口")
 @RequestMapping("/question_run")
 public class QuestionRunController {
     

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="generator.mapper.PostCommentMapper">
+<mapper namespace="com.linmo.oj.mapper.PostCommentMapper">
 
-    <resultMap id="BaseResultMap" type="generator.model.PostComment">
+    <resultMap id="BaseResultMap" type="com.linmo.oj.model.postcomment.PostComment">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="postId" column="post_id" jdbcType="BIGINT"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
@@ -13,8 +13,20 @@
             <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,post_id,user_id,
-        content,create_time,del_flag
-    </sql>
+    <select id="queryByPostId" resultType="com.linmo.oj.model.postcomment.vo.PostCommentVo">
+        SELECT
+            pc.id,
+            pc.content AS content,
+            u.id AS userId,
+            u.user_account AS userAccount,
+            u.user_avatar	AS userAvatar
+        FROM
+            post p
+                LEFT JOIN post_comment pc ON pc.post_id = p.id
+                LEFT JOIN user u ON u.id = pc.user_id
+        WHERE
+            p.id = #{postId}
+        GROUP BY
+            pc.id
+    </select>
 </mapper>

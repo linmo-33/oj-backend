@@ -74,7 +74,6 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     @Override
     public PageResult<SysNoticeVo> queryByPage(SysNoticeQueryDto queryReq) {
         Page<User> page = PageHelper.startPage(queryReq.getPageIndex(), queryReq.getPageSize());
-
         //分页条件查询公告信息
         List<SysNotice> roleList = sysNoticeMapper.selectList(new LambdaQueryWrapper<SysNotice>()
                 .like(StrUtil.isNotBlank(queryReq.getTitle()), SysNotice::getTitle, queryReq.getTitle())
@@ -94,6 +93,19 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
             return EntityConverter.copyAndGetSingle(sysNotice, SysNoticeVo.class);
         }
         return null;
+    }
+
+    @Override
+    public PageResult<SysNoticeVo> queryByPageUser(SysNoticeQueryDto queryReq) {
+        //前端展示最新公告
+        Page<User> page = PageHelper.startPage(queryReq.getPageIndex(), queryReq.getPageSize());
+        String orderBy = "create_time desc";
+        //分页条件查询公告信息
+        List<SysNotice> roleList = sysNoticeMapper.selectList(new LambdaQueryWrapper<SysNotice>()
+                .like(StrUtil.isNotBlank(queryReq.getTitle()), SysNotice::getTitle, queryReq.getTitle())
+                .eq(StrUtil.isNotBlank(queryReq.getStatus()), SysNotice::getStatus, "1"));
+        List<SysNoticeVo> pageList = EntityConverter.copyAndGetList(roleList, SysNoticeVo.class);
+        return new PageResult<>(pageList, page.getTotal(), page.getPageNum(), page.getPageSize());
     }
 }
 

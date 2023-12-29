@@ -1,4 +1,4 @@
-package generator.model;
+package com.linmo.oj.model.postcomment;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,32 +9,38 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 帖子点赞
- * @TableName post_thumb
+ * 帖子评论
+ * @TableName post_comment
  */
-@TableName(value ="post_thumb")
+@TableName(value ="post_comment")
 @Data
-public class PostThumb implements Serializable {
+public class PostComment implements Serializable {
     /**
-     * id
+     * 
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 帖子 id
+     * 帖子id
      */
     @TableField(value = "post_id")
     private Long postId;
 
     /**
-     * 创建用户 id
+     * 评论用户id
      */
     @TableField(value = "user_id")
     private Long userId;
 
     /**
-     * 创建时间
+     * 评论内容
+     */
+    @TableField(value = "content")
+    private String content;
+
+    /**
+     * 
      */
     @TableField(value = "create_time")
     private Date createTime;

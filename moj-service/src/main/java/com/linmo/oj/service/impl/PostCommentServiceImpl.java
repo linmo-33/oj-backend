@@ -1,9 +1,9 @@
-package generator.service.impl;
+package com.linmo.oj.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import generator.model.PostComment;
-import generator.service.PostCommentService;
-import generator.mapper.PostCommentMapper;
+import com.linmo.oj.model.postcomment.PostComment;
+import com.linmo.oj.service.PostCommentService;
+import com.linmo.oj.mapper.PostCommentMapper;
 import org.springframework.stereotype.Service;
 
 /**

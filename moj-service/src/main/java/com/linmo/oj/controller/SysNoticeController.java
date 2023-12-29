@@ -58,17 +58,21 @@ public class SysNoticeController {
 
     @ApiOperation(value = "根据id获取公告")
     @GetMapping(value = "/queryById")
-    @SaCheckPermission(value = "sysNotice.queryById", orRole = "admin")
     public BaseResponse<SysNoticeVo> querySysNoticeById(@RequestParam("id") Long id) {
         return ResultUtils.success(sysNoticeService.queryById(id));
     }
 
     @ApiOperation(value = "分页查询公告")
     @PostMapping(value = "/queryList")
-    @SaCheckPermission(value = "sysNotice.queryList", orRole = "admin")
+    @SaCheckPermission(value = "sysNotice.query", orRole = "admin")
     public BaseResponse<PageResult<SysNoticeVo>> queryListSysNotice(@Validated @RequestBody SysNoticeQueryDto sysNoticeQueryDto) {
         return ResultUtils.success(sysNoticeService.queryByPage(sysNoticeQueryDto));
     }
 
+    @ApiOperation(value = "分页查询公告（用户）")
+    @PostMapping(value = "/query")
+    public BaseResponse<PageResult<SysNoticeVo>> queryListSysNoticeUser(@Validated @RequestBody SysNoticeQueryDto sysNoticeQueryDto) {
+        return ResultUtils.success(sysNoticeService.queryByPageUser(sysNoticeQueryDto));
+    }
 
 }

@@ -41,4 +41,9 @@ public interface SysNoticeService extends IService<SysNotice> {
      */
     SysNoticeVo queryById(Long id);
 
+    /**
+     * 分页查询公告信息(用户)
+     */
+    PageResult<SysNoticeVo> queryByPageUser(SysNoticeQueryDto queryReq);
+
 }

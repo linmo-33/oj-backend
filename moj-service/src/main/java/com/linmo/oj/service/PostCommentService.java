@@ -1,6 +1,6 @@
-package generator.service;
+package com.linmo.oj.service;
 
-import generator.model.PostComment;
+import com.linmo.oj.model.postcomment.PostComment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,5 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-12-21 10:46:27
 */
 public interface PostCommentService extends IService<PostComment> {
+
+
 
 }

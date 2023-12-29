@@ -1,12 +1,13 @@
-package generator.model;
+package com.linmo.oj.model.post;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 帖子
@@ -46,16 +47,11 @@ public class Post implements Serializable {
     private String tags;
 
     /**
-     * 点赞数
+     * 评论数
      */
-    @TableField(value = "thumb_num")
-    private Integer thumbNum;
+    @TableField(value = "comment_num")
+    private Integer commentNum;
 
-    /**
-     * 收藏数
-     */
-    @TableField(value = "favour_num")
-    private Integer favourNum;
 
     /**
      * 帖子状态(0正常 1关闭 2待审核)

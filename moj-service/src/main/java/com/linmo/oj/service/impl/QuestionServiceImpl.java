@@ -191,8 +191,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
             }
         }
         // 拼接查询条件
-        queryWrapper.like(StringUtils.isNotBlank(queryReq.getTitle()), "title", queryReq.getTitle())
-                .like(StringUtils.isNotBlank(queryReq.getContent()), "content", queryReq.getContent())
+        queryWrapper.like(StringUtils.isNotBlank(queryReq.getKeyword()), "title", queryReq.getKeyword())
+                .like(StringUtils.isNotBlank(queryReq.getKeyword()), "content", queryReq.getKeyword())
                 .eq(StringUtils.isNotBlank(queryReq.getDifficulty()), "difficulty", queryReq.getDifficulty());
         if (CollectionUtils.isNotEmpty(queryReq.getTags())) {
             for (String tag : queryReq.getTags()) {
@@ -257,7 +257,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
             Question question = questionMapper.selectOne(new LambdaQueryWrapper<Question>()
                     .eq(Question::getId, id));
             if (BeanUtil.isEmpty(question)) {
-                throw new BusinessException("该角色不存在");
+                throw new BusinessException("该题目不存在");
             }
             return getQuestionVoPage(question);
         }

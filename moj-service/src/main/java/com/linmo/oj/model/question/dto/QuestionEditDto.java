@@ -3,6 +3,8 @@ package com.linmo.oj.model.question.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -15,15 +17,19 @@ import java.util.List;
 public class QuestionEditDto {
 
     @ApiModelProperty(value = "id")
+    @NotNull(message = "id不能为空")
     private Long id;
 
     @ApiModelProperty(value = "题目标题")
+    @NotBlank(message = "题目标题不能为空")
     private String title;
 
     @ApiModelProperty(value = "题目内容")
+    @NotBlank(message = "题目内容不能为空")
     private String content;
 
     @ApiModelProperty(value = "题目难度(0简单，1中等，2困难)")
+    @NotBlank(message = "题目难度不能为空")
     private String difficulty;
 
     @ApiModelProperty(value = "题目标签列表（json 数组）")

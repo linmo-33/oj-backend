@@ -260,8 +260,7 @@ CREATE TABLE `post`
     `img`         varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NULL     DEFAULT NULL COMMENT '缩略图',
     `content`     text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          NULL COMMENT '内容',
     `tags`        varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL     DEFAULT NULL COMMENT '标签列表（json 数组）',
-    `thumb_num`   int(0)                                                         NOT NULL DEFAULT 0 COMMENT '点赞数',
-    `favour_num`  int(0)                                                         NOT NULL DEFAULT 0 COMMENT '收藏数',
+    `comment_num`  int(0)                                                         NOT NULL DEFAULT 0 COMMENT '评论数',
     `status`      varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci    NULL     DEFAULT '2' COMMENT '帖子状态(0正常 1关闭 2待审核)',
     `user_id`     bigint(0)                                                      NOT NULL COMMENT '创建用户 id',
     `create_time` datetime(0)                                                    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -274,43 +273,6 @@ CREATE TABLE `post`
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT = '帖子'
   ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for post_favour
--- ----------------------------
-DROP TABLE IF EXISTS `post_favour`;
-CREATE TABLE `post_favour`
-(
-    `id`          bigint(0)   NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `post_id`     bigint(0)   NOT NULL COMMENT '帖子 id',
-    `user_id`     bigint(0)   NOT NULL COMMENT '创建用户 id',
-    `create_time` datetime(0) NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `del_flag`    tinyint(0)  NOT NULL DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci COMMENT = '帖子收藏'
-  ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for post_thumb
--- ----------------------------
-DROP TABLE IF EXISTS `post_thumb`;
-CREATE TABLE `post_thumb`
-(
-    `id`          bigint(0)   NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `post_id`     bigint(0)   NOT NULL COMMENT '帖子 id',
-    `user_id`     bigint(0)   NOT NULL COMMENT '创建用户 id',
-    `create_time` datetime(0) NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `del_flag`    tinyint(0)  NOT NULL DEFAULT 0 COMMENT '删除标志（0代表未删除，1代表已删除）',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci COMMENT = '帖子点赞'
-  ROW_FORMAT = Dynamic;
-
 
 DROP TABLE IF EXISTS `post_comment`;
 CREATE TABLE `post_comment`
