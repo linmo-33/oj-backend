@@ -1,7 +1,11 @@
 package com.linmo.oj.service;
 
-import com.linmo.oj.model.postcomment.PostComment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.linmo.oj.model.postcomment.PostComment;
+import com.linmo.oj.model.postcomment.dto.PostCommentAddDto;
+import com.linmo.oj.model.postcomment.vo.PostCommentVo;
+
+import java.util.List;
 
 /**
 * @author ljl
@@ -10,6 +14,18 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface PostCommentService extends IService<PostComment> {
 
+    /**
+     * 新增评论
+     */
+    Boolean create(PostCommentAddDto addReq);
+    
 
+    /**
+     * 删除指定评论
+     */
+    Boolean delete(Long id);
+
+
+    List<PostCommentVo> queryByPostId(Long postId);
 
 }

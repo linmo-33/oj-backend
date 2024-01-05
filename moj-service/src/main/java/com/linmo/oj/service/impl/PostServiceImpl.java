@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
 * @author ljl
 * @description 针对表【post(帖子)】的数据库操作Service实现
-* @createDate 2023-12-21 10:46:04
+* @date 2023-12-21 10:46:04
 */
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
@@ -100,7 +100,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
                 .like(StrUtil.isNotBlank(queryReq.getTitle()), Post::getTitle, queryReq.getTitle())
                 .like(StrUtil.isNotBlank(queryReq.getContent()), Post::getContent, queryReq.getContent())
                 .eq(StrUtil.isNotBlank(queryReq.getStatus()), Post::getStatus, queryReq.getStatus()));
-        List<PostVo> pageList = postList.stream().map(PostVo::objToVo).collect(java.util.stream.Collectors.toList());
+        List<PostVo> pageList = postList.stream().map(PostVo::objToVo).collect(Collectors.toList());
         return new PageResult<>(pageList, page.getTotal(), page.getPageNum(), page.getPageSize());
     }
 
@@ -132,7 +132,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
                 .like(StrUtil.isNotBlank(queryReq.getTitle()), Post::getTitle, queryReq.getTitle())
                 .like(StrUtil.isNotBlank(queryReq.getContent()), Post::getContent, queryReq.getContent())
                 .eq(Post::getStatus, '0'));
-        // 1. 关联查询用户信息
+
+        // 关联查询用户信息
         Set<Long> userIdSet = postList.stream().map(Post::getUserId).collect(Collectors.toSet());
         Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
                 .collect(Collectors.groupingBy(User::getId));
@@ -157,9 +158,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
             Post post = postMapper.selectOne(new LambdaQueryWrapper<Post>()
                     .eq(Post::getId, id));
             if (BeanUtil.isEmpty(post)) {
-                throw new BusinessException("没有提交记录");
+                throw new BusinessException("该帖子不存在");
             }
-            return PostVo.objToVo(post);
+            User user = userService.getById(post.getUserId());
+            PostVo postVo = PostVo.objToVo(post);
+            postVo.setUserAvatar(user.getUserAvatar());
+            postVo.setUserName(user.getUserName());
+            return postVo;
         }
         return null;
     }

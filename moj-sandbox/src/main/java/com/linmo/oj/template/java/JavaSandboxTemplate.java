@@ -160,8 +160,6 @@ public abstract class JavaSandboxTemplate {
      * @param dir 代码目录
      */
     protected void clearFile(File codeFile, String dir){
-        //解释：如果是在IDEA中运行，那么代码文件的父目录就是项目的根目录，不需要删除
-        //如果是在服务器上运行，那么代码文件的父目录就是临时目录，需要删除
         if (codeFile.getParentFile() != null) {
             boolean del = FileUtil.del(dir);
             log.info("删除{}: {}", del ? "成功" : "失败", dir);
